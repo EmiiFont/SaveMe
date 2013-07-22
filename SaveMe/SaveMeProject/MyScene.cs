@@ -14,7 +14,7 @@ namespace SaveMeProject
         {
             RenderManager.BackgroundColor = Color.CornflowerBlue;
 
-            //Insert your code here
+            //Insert code here
         }
     }
 }
