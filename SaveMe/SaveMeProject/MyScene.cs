@@ -19,9 +19,12 @@ namespace SaveMeProject
         protected override void CreateScene()
         {
             RenderManager.BackgroundColor = Color.CornflowerBlue;
-
-            EntityManager.Add(CreateGround("floor1", 650, 610, 0));
-            EntityManager.Add(CreateGround("floor2", 150, 610, 0));
+            EntityManager.Add(CreateGround("floor1", 0,
+                WaveServices.Platform.ScreenHeight, 0));
+            EntityManager.Add(CreateGround("floor2", WaveServices.Platform.ScreenWidth / 2,
+                WaveServices.Platform.ScreenHeight, 0));
+            EntityManager.Add(CreateGround("floor3", WaveServices.Platform.ScreenWidth,
+                WaveServices.Platform.ScreenHeight, 0));
         }
 
 
@@ -39,7 +42,7 @@ namespace SaveMeProject
                 .AddComponent(new Transform2D() { X = x, Y = y })
                 .AddComponent(new RectangleCollider())
                 .AddComponent(new Sprite(GroundTexture))
-                .AddComponent(new RigidBody2D() { IsKinematic = true})
+                .AddComponent(new RigidBody2D() { IsKinematic = true })
                 .AddComponent(new SpriteRenderer(DefaultLayers.Opaque));
 
             sprite.FindComponent<RigidBody2D>().Rotation = angle;

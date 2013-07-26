@@ -60,12 +60,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\crate.wpk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Floor.wpk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Content\GroundSprite.wpk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

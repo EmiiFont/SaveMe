@@ -11,30 +11,30 @@ namespace SaveMe
 {
     public class App : WaveEngine.Adapter.Application
     {
-        SaveMeProject.Game game;
-        SpriteBatch spriteBatch;
-        Texture2D splashScreen;
-        bool splashState = true;
-        TimeSpan time;
-        Vector2 position;
-        Color backgroundSplashColor;
+        SaveMeProject.Game _game;
+        SpriteBatch _spriteBatch;
+        Texture2D _splashScreen;
+        bool _splashState = true;
+        TimeSpan _time;
+        Vector2 _position;
+        Color _backgroundSplashColor;
 
         public App()
         {
-            this.Width = 800;
-            this.Height = 600;
-            this.FullScreen = false;
-            this.WindowTitle = "SaveMe";
+            Width = 800;
+            Height = 600;
+            FullScreen = false;
+            WindowTitle = "SaveMe";
         }
 
         public override void Initialize()
         {
-            this.game = new SaveMeProject.Game();
-            this.game.Initialize(this.Adapter);
+            _game = new SaveMeProject.Game();
+            _game.Initialize(Adapter);
 
             #region WAVE SOFTWARE LICENSE AGREEMENT
-            this.backgroundSplashColor = new Color(32, 32, 32, 255);
-            this.spriteBatch = new SpriteBatch(WaveServices.GraphicsDevice);
+            _backgroundSplashColor = new Color(32, 32, 32, 255);
+            _spriteBatch = new SpriteBatch(WaveServices.GraphicsDevice);
 
             var resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             string name = string.Empty;
@@ -47,6 +47,7 @@ namespace SaveMe
                     break;
                 }
             }
+           
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -55,31 +56,31 @@ namespace SaveMe
 
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
             {
-                this.splashScreen = WaveServices.Assets.Global.LoadAsset<Texture2D>(name, stream);
+                _splashScreen = WaveServices.Assets.Global.LoadAsset<Texture2D>(name, stream);
             }
 
-            position = new Vector2();
-            position.X = (this.Width / 2.0f) - (this.splashScreen.Width / 2.0f);
-            position.Y = (this.Height / 2.0f) - (this.splashScreen.Height / 2.0f);
+            _position = new Vector2();
+            _position.X = (Width / 2.0f) - (_splashScreen.Width / 2.0f);
+            _position.Y = (Height / 2.0f) - (_splashScreen.Height / 2.0f);
             #endregion
         }
 
         public override void Update(TimeSpan elapsedTime)
         {
-            if (this.game != null && !this.game.HasExited)
+            if (_game != null && !_game.HasExited)
             {
                 if (WaveServices.Input.KeyboardState.F10 == ButtonState.Pressed)
                 {
-                    this.FullScreen = !this.FullScreen;
+                    FullScreen = !FullScreen;
                 }
 
-                if (this.splashState)
+                if (_splashState)
                 {
                     #region WAVE SOFTWARE LICENSE AGREEMENT
-                    this.time += elapsedTime;
-                    if (time > TimeSpan.FromSeconds(2))
+                    _time += elapsedTime;
+                    if (_time > TimeSpan.FromSeconds(2))
                     {
-                        this.splashState = false;
+                        _splashState = false;
                     }
                     #endregion
                 }
@@ -87,12 +88,12 @@ namespace SaveMe
                 {
                     if (WaveServices.Input.KeyboardState.Escape == ButtonState.Pressed)
                     {
-                        this.Exit();
-                        this.game.Unload();
+                        Exit();
+                        _game.Unload();
                     }
                     else
                     {
-                        this.game.UpdateFrame(elapsedTime);
+                        _game.UpdateFrame(elapsedTime);
                     }
                 }
             }
@@ -100,22 +101,20 @@ namespace SaveMe
 
         public override void Draw(TimeSpan elapsedTime)
         {
-            if (this.game != null && !this.game.HasExited)
+            if (_game == null || _game.HasExited) return;
+            if (_splashState)
             {
-                if (this.splashState)
-                {
-                    #region WAVE SOFTWARE LICENSE AGREEMENT
-                    WaveServices.GraphicsDevice.RenderTargets.SetRenderTarget(null);
-                    WaveServices.GraphicsDevice.Clear(ref this.backgroundSplashColor, ClearFlags.Target, 1);
-                    this.spriteBatch.Begin();
-                    this.spriteBatch.Draw(this.splashScreen, this.position, Color.White);
-                    this.spriteBatch.End();
-                    #endregion
-                }
-                else
-                {
-                    this.game.DrawFrame(elapsedTime);
-                }
+                #region WAVE SOFTWARE LICENSE AGREEMENT
+                WaveServices.GraphicsDevice.RenderTargets.SetRenderTarget(null);
+                WaveServices.GraphicsDevice.Clear(ref _backgroundSplashColor, ClearFlags.Target, 1);
+                _spriteBatch.Begin();
+                _spriteBatch.Draw(_splashScreen, _position, Color.White);
+                _spriteBatch.End();
+                #endregion
+            }
+            else
+            {
+                _game.DrawFrame(elapsedTime);
             }
         }
     }
