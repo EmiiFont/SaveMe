@@ -1,8 +1,10 @@
 #region Using Statements
 using System;
+using SaveMeProject.Helpers;
 using WaveEngine.Common;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
+using WaveEngine.Components.Animation;
 using WaveEngine.Components.Graphics2D;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
@@ -25,6 +27,13 @@ namespace SaveMeProject
                 WaveServices.Platform.ScreenHeight, 0));
             EntityManager.Add(CreateGround("floor3", WaveServices.Platform.ScreenWidth,
                 WaveServices.Platform.ScreenHeight, 0));
+
+            EntityManager.Add(CreateSaver("people", WaveServices.Platform.ScreenWidth / 3,
+                WaveServices.Platform.ScreenHeight - 30));
+
+            EntityManager.Add(CreateSaver("people2", WaveServices.Platform.ScreenWidth / 2,
+                WaveServices.Platform.ScreenHeight - 30, true));
+
         }
 
 
@@ -48,6 +57,37 @@ namespace SaveMeProject
             sprite.FindComponent<RigidBody2D>().Rotation = angle;
 
             return sprite;
+        }
+
+
+        private static Entity CreateSaver(string name, float x = 0, float y = 0, bool reverse = false)
+        {
+            var people = new Entity(name);
+
+            const string path = "Content/Awesomenauts";
+            people.AddComponent(
+                new Transform2D
+                    {
+                        XScale = 0.5f,
+                        YScale = 0.5f,
+                        X = x,
+                        Y = y,
+                        Origin = new Vector2(1.6f, 1),
+                    })
+                .AddComponent(new Sprite(String.Format("{0}.wpk", path)))
+                .AddComponent(new AnimatedSpriteRenderer(DefaultLayers.Alpha))
+                .AddComponent(Animation2D.Create<SpriteXMLReader>("Content/Awesomenauts.xml")
+                                  .Add("Idle",
+                                       new SpriteSheetAnimationSequence
+                                           {
+                                               First = 1,
+                                               Length = 70,
+                                               FramesPerSecond = 70,
+                                           }));
+
+            people.AddComponent(new SaverBehavior(reverse));
+            people.FindComponent<Animation2D>().Play(true);
+            return people;
         }
 
     }

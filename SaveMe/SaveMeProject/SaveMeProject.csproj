@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="Helpers\SaverBehavior.cs" />
+    <Compile Include="Helpers\SpriteXMLReader.cs" />
     <Compile Include="MyScene.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

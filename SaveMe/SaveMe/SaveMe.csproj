@@ -53,13 +53,20 @@
     <EmbeddedResource Include="Game.ico" />
     <EmbeddedResource Include="SplashScreen.wpk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\Awesomenauts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SaveMeProject\SaveMeProject.csproj">
       <Name>SaveMeProject</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Awesomenauts.wpk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\GroundSprite.wpk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
