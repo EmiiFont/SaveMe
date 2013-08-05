@@ -18,14 +18,8 @@ namespace SaveMeProject.Helpers
         private const int RIGHT = 1;
         private const int LEFT = -1;
         private const int NONE = 0;
-        private const int BORDER_OFFSET = 25;
+        private const int BORDER_OFFSET = 10;
 
-        private Animation2D _reverseSaver;
-        private Animation2D _saver;
-        private bool _reverse;
-
-        [RequiredComponent]
-        public Animation2D anim2D;
         [RequiredComponent]
         public Transform2D trans2D;
 
@@ -33,80 +27,11 @@ namespace SaveMeProject.Helpers
         private AnimState currentState, lastState;
         private enum AnimState { Idle, Right, Left };
 
-        public SaverBehavior(bool reverse)
+        public SaverBehavior()
             : base("SaverBehavior")
         {
-            _reverse = reverse;
             direction = NONE;
-
-            _saver = Animation2D.Create<SpriteXMLReader>("Content/Awesomenauts.xml").
-                Add("Running", new SpriteSheetAnimationSequence
-                                   {
-                                       First = 1,
-                                       Length = 70,
-                                       FramesPerSecond = 70,
-                                   }).
-                Add("Idle", new SpriteSheetAnimationSequence
-                                {
-                                    First = 1,
-                                    Length = 70,
-                                    FramesPerSecond = 70,
-                                });
-
-            _reverseSaver = Animation2D.Create<SpriteXMLReaderRevese>("Content/Awesomenauts.xml").
-                Add("Running", new SpriteSheetAnimationSequence
-                                   {
-                                       First = 1,
-                                       Length = 70,
-                                       FramesPerSecond = 70,
-                                   }).
-                Add("Idle", new SpriteSheetAnimationSequence
-                                {
-                                    First = 1,
-                                    Length = 70,
-                                    FramesPerSecond = 70,
-                                });
-
-
-            trans2D = null;
-            anim2D = null;
             currentState = AnimState.Idle;
-        }
-
-        protected override void Initialize()
-        {
-            _saver = Animation2D.Create<SpriteXMLReader>("Content/Awesomenauts.xml").
-                Add("Running", new SpriteSheetAnimationSequence
-                {
-                    First = 1,
-                    Length = 70,
-                    FramesPerSecond = 70,
-                }).
-                Add("Idle", new SpriteSheetAnimationSequence
-                {
-                    First = 37,
-                    Length = 40,
-                    FramesPerSecond = 60,
-                });
-
-            _reverseSaver = Animation2D.Create<SpriteXMLReaderRevese>("Content/Awesomenauts.xml").
-                Add("Running", new SpriteSheetAnimationSequence
-                                   {
-                                       First = 1,
-                                       Length = 70,
-                                       FramesPerSecond = 70,
-                                   }).
-                Add("Idle", new SpriteSheetAnimationSequence
-                                {
-                                    First = 37,
-                                    Length = 40,
-                                    FramesPerSecond = 60,
-                                });
-
-            trans2D.Effect = _reverse ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            anim2D = _reverse ? _saver : _reverseSaver;
-
-            base.Initialize();
         }
         protected override void Update(TimeSpan gameTime)
         {
@@ -144,20 +69,12 @@ namespace SaveMeProject.Helpers
                 switch (currentState)
                 {
                     case AnimState.Idle:
-                        anim2D.CurrentAnimation = "Idle";
-                        anim2D.Play(true);
                         direction = NONE;
                         break;
                     case AnimState.Right:
-                        anim2D = _reverse ? _reverseSaver : _saver;
-                        anim2D.CurrentAnimation = "Running";
-                        anim2D.Play(true);
                         direction = RIGHT;
                         break;
                     case AnimState.Left:
-                        anim2D = _reverse ? _saver : _reverseSaver;
-                        anim2D.CurrentAnimation = "Running";
-                        anim2D.Play(true);
                         direction = LEFT;
                         break;
                 }
